@@ -29,9 +29,6 @@ end
 # is feasable and useful.
 Rails.application.eager_load! if ENV['CI'].present?
 
-# Download chromedriver; Github Actions already has everything preinstalled
-require 'webdrivers' unless ENV['CI'].present?
-
 require 'rspec/rails'
 require 'database_cleaner/active_record'
 
@@ -47,7 +44,7 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
 
   # Include request spec helpers
-  config.include RdbRequestHelpers
+  config.include RdbRequestHelpers, type: :feature
 
   config.around(:each) do |example|
     DatabaseCleaner.clean_with(:truncation)
